@@ -11,13 +11,9 @@ async function setupNodeEvents(on, config) {
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'https://telnyx.com/',
-    viewportHeight: 1920,
-    viewportWidth: 1080,
-    retries: {
-      runMode: 3,
-      openMode: 3
-    },
+    baseUrl: 'https://telnyx.com',
+    viewportWidth: 1920,
+    viewportHeight: 1080,
     specPattern: '**/*.{feature,features}',
     setupNodeEvents,
     reporter: "cypress-mochawesome-reporter",
