@@ -28,7 +28,13 @@ When(/^I click the '(.*)' link$/, (link) => {
             basePage.clickTalkToExpertLink();
             break;
         case "Single Sign-On":
-            loginPage.clickSsoLink();
+            loginPage.clickLink('sso');
+            break;
+        case "Resend":
+            loginPage.clickLink('resend-email');
+            break;
+        case "Forgot your password?": 
+            loginPage.clickLink('password-reset');
             break;
         default:
             cy.wrap(0).should("eq", 1, "Click failed");
@@ -51,9 +57,16 @@ When(/^I fill the '(.*)' form with '(.*)' data$/, (form, data) => {
             loginPage.submitForm('login');
             break;
         case "Single Sign-On":
-            loginPage.clickSsoLink();
             loginPage.fillEmailInput('sso', user.email);
             loginPage.submitForm('sso');
+            break;
+        case "Resend Verification Email":
+            loginPage.fillEmailInput('resendEmail', user.email);
+            loginPage.submitForm('resendEmail');
+            break;
+        case "Password Reset":
+            loginPage.fillEmailInput('passwordReset', user.email);
+            loginPage.submitForm('passwordReset');
             break;
         default:
             cy.wrap(0).should("eq", 1, "Form not found");
@@ -107,13 +120,13 @@ Then(/^I see the header text '(.*)'$/, (header) => {
     }
 });
 
-Then(/^I see the error message text '(.*)' below '(.*)' field$/, (errorMessage, field) => {
+Then(/^I see the '(.*)' message text '(.*)' below '(.*)' field$/, (type, text, field) => {
     switch (field) {
         case "all":
-            loginPage.getErrorMessage().should("be.visible").should("have.text", errorMessage);
+            loginPage.getMessage(type).should("be.visible").should("contain.text", text);
             break;
         default:
-            basePage.getErrorMessage(field).should("contain.text", errorMessage);
+            basePage.getErrorMessage(field).should("contain.text", text);
             break;
     }
 });
