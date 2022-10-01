@@ -27,7 +27,7 @@ Feature: Verify contact methods
   Scenario: Successfully send 'Talk to an expert' form with valid values
     When I click the 'Talk to an expert' link
     Then I see the header text 'Talk to an expert'
-    When I fill the 'Talk to an expert' form with valid data
+    When I fill the 'Talk to an expert' form with 'valid' data
     Then I am on the page with URL '/thank-you'
     * I see the header text 'Thanks for Reaching Out!'
 

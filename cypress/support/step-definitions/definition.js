@@ -1,10 +1,17 @@
 const { Given, When, Then } = require("@badeball/cypress-cucumber-preprocessor");
 const basePage = require("../pages/base.page");
 const contactPage = require("../pages/contact.page");
+const user = require("../../fixtures/user");
+const loginPage = require("../pages/login.page");
 
 Given(/^I am on Telnyx (.*) page$/, (page) => {
-    if (page === "home") {
-        cy.visit("/");
+    switch (page) {
+        case "home":
+            cy.visit("/");
+            break;
+        case "login":
+            cy.visit("https://portal.telnyx.com");
+            break;
     }
     basePage.closeCookies();
 });
@@ -20,20 +27,33 @@ When(/^I click the '(.*)' link$/, (link) => {
         case "Talk to an expert":
             basePage.clickTalkToExpertLink();
             break;
+        case "Single Sign-On":
+            loginPage.clickSsoLink();
+            break;
         default:
             cy.wrap(0).should("eq", 1, "Click failed");
     }
 });
 
-When(/^I fill the '(.*)' form with valid data$/, (form) => {
+When(/^I fill the '(.*)' form with '(.*)' data$/, (form, data) => {
     switch (form) {
         case "Talk to an expert":
             contactPage.chooseReasonSelect("Support");
-            basePage.fillFirstNameInput("Test");
-            basePage.fillLastNameInput("User");
-            basePage.fillEmailInput("testuser@example.com");
-            basePage.fillWebsiteInput("https://example.com");
+            basePage.fillFirstNameInput(user.firstName);
+            basePage.fillLastNameInput(user.lastName);
+            basePage.fillEmailInput(user.email);
+            basePage.fillWebsiteInput(user.website);
             basePage.submitForm();
+            break;
+        case "Login":
+            loginPage.fillEmailInput('login', user.email);
+            loginPage.fillPasswordInput('login', user.password);
+            loginPage.submitForm('login');
+            break;
+        case "Single Sign-On":
+            loginPage.clickSsoLink();
+            loginPage.fillEmailInput('sso', user.email);
+            loginPage.submitForm('sso');
             break;
         default:
             cy.wrap(0).should("eq", 1, "Form not found");
@@ -79,14 +99,23 @@ Then(/^I see the header text '(.*)'$/, (header) => {
     switch (header) {
         case "Calling from overseas?":
             contactPage.getCallFromOverseasHeader().should("contain.text", header);
+            break;
         case "Talk to an expert":
         case "Thanks for Reaching Out!":
             contactPage.getMainHeader().should("contain.text", header);
+            break;
     }
 });
 
 Then(/^I see the error message text '(.*)' below '(.*)' field$/, (errorMessage, field) => {
-    basePage.getErrorMessage(field).should("contain.text", errorMessage);
+    switch (field) {
+        case "all":
+            loginPage.getErrorMessage().should("be.visible").should("have.text", errorMessage);
+            break;
+        default:
+            basePage.getErrorMessage(field).should("contain.text", errorMessage);
+            break;
+    }
 });
 
 Then(/^I am on the page with URL '(.*)'$/, (url) => {
