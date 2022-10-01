@@ -17,8 +17,26 @@ When(/^I click the '(.*)' link$/, (link) => {
         case "Calling from overseas?":
             basePage.clickCallFromOverseasLink();
             break;
+        case "Talk to an expert":
+            basePage.clickTalkToExpertLink();
+            break;
         default:
             cy.wrap(0).should("eq", 1, "Click failed");
+    }
+});
+
+When(/^I fill the '(.*)' form with valid data$/, (form) => {
+    switch (form) {
+        case "Talk to an expert":
+            contactPage.chooseReasonSelect("Support");
+            basePage.fillFirstNameInput("Test");
+            basePage.fillLastNameInput("User");
+            basePage.fillEmailInput("testuser@example.com");
+            basePage.fillWebsiteInput("https://example.com");
+            basePage.submitForm();
+            break;
+        default:
+            cy.wrap(0).should("eq", 1, "Form not found");
     }
 });
 
@@ -48,5 +66,18 @@ Then(/^All '(.*)' elements have '(.*)' attribute value '(.*)'$/, (elements, attr
 });
 
 Then(/^I see the header text '(.*)'$/, (header) => {
-    contactPage.getCallFromOverseasHeader().should("contain.text", header);
+    switch (header) {
+        case "Calling from overseas?":
+            contactPage.getCallFromOverseasHeader().should("contain.text", header);
+        case "Talk to an expert":
+        case "Thanks for Reaching Out!":
+            contactPage.getMainHeader().should("contain.text", header);
+    }
+});
+
+Then(/^I am on the page with URL '(.*)'$/, (url) => {
+    switch (url) {
+        case "/thank-you":
+            cy.url().should("include", `${url}?userEmail=`);
+    }
 });
