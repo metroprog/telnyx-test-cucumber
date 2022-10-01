@@ -13,12 +13,12 @@ const emailInput = "#Email";
 const websiteInput = "#Website";
 const submitButton = '[type="submit"]';
 const errorMessages = {
-    firstName: "#ValidMsgFirstName",
-    lastName: "#ValidMsgLastName",
-    email: "#ValidMsgEmail",
-    website: "#ValidMsgWebsite",
-    reasonContact: "#ValidMsgReason_for_Contact__c",
-    primaryInterest: "#ValidMsgUse_Case_Form__c",
+    'First Name': "#ValidMsgFirstName",
+    'Last Name': "#ValidMsgLastName",
+    'Business email': "#ValidMsgEmail",
+    'Company website': "#ValidMsgWebsite",
+    'Choose reason for contact': "#ValidMsgReason_for_Contact__c",
+    'Primary Interest': "#ValidMsgUse_Case_Form__c",
 };
 
 class BasePage {
@@ -55,6 +55,10 @@ class BasePage {
         return cy.get(socialLinks).contains(social).parent().parent().invoke("attr", attribute);
     }
 
+    getErrorMessage(field) {
+        return cy.get(errorMessages[field]);
+    }
+
     fillFirstNameInput(firstName) {
         cy.get(firstNameInput).clear().type(firstName);
     }
@@ -78,7 +82,6 @@ class BasePage {
     submitForm() {
         cy.get(submitButton).click();
     }
-
 }
 
 module.exports = new BasePage();

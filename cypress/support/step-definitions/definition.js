@@ -40,6 +40,16 @@ When(/^I fill the '(.*)' form with valid data$/, (form) => {
     }
 });
 
+When(/^I submit the '(.*)' form with empty fields$/, (form) => {
+    switch (form) {
+        case "Talk to an expert":
+            basePage.submitForm();
+            break;
+        default:
+            cy.wrap(0).should("eq", 1, "Form not found");
+    }
+});
+
 Then(/^I see the '(.*)' pop up$/, () => {
     basePage.getCallUsPopUp().should("be.visible");
 });
@@ -75,9 +85,14 @@ Then(/^I see the header text '(.*)'$/, (header) => {
     }
 });
 
+Then(/^I see the error message text '(.*)' below '(.*)' field$/, (errorMessage, field) => {
+    basePage.getErrorMessage(field).should("contain.text", errorMessage);
+});
+
 Then(/^I am on the page with URL '(.*)'$/, (url) => {
-    switch (url) {
-        case "/thank-you":
-            cy.url().should("include", `${url}?userEmail=`);
-    }
+    cy.url().should("include", url);
+});
+
+Then(/^I see highlighted required fields$/, () => {
+    contactPage.getRequiredFields().should('have.class', 'mktoInvalid');
 });
