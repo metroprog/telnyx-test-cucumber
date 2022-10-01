@@ -4,7 +4,12 @@
   "description": "Web UI automated tests of Telnyx site with JavaScript + Cypress + Cucumber",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run:chrome1366": "cypress run --config-file 1366p.config.js --browser chrome",
+    "merge:reports": "mochawesome-merge \"cypress/report/*.json\" -o \"cypress/report/index.json\"",
+    "generate:report": "marge cypress/report/index.json --reportDir public --reportPageTitle index.html --inline"
   },
   "author": "",
   "license": "ISC",
