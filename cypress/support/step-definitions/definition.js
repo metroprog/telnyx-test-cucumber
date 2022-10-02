@@ -86,6 +86,13 @@ When(/^I fill the '(.*)' form with '(.*)' data$/, (form, data) => {
             basePage.fillEmailInput(user.email);
             basePage.submitForm();
             break;
+        case "Signup":
+            signupPage.fillEmailInput(data, user);
+            signupPage.fillFullNameInput(`${user.firstName} ${user.lastName}`);
+            signupPage.fillPasswordInput(user.password);
+            signupPage.checkTermsAndConditionsCheckbox();
+            basePage.submitForm();
+            break;
         default:
             cy.wrap(0).should("eq", 1, "Form not found");
     }
@@ -157,7 +164,7 @@ Then(/^I see the '(.*)' message text '(.*)' below '(.*)' field$/, (type, text, f
             loginPage.getMessage(type).should("be.visible").should("contain.text", text);
             break;
         case "signup":
-            signupPage.getErrorMessages().should("be.visible").should("contain.text", text);
+            signupPage.getErrorMessages().should("be.visible");
             break;
         default:
             basePage.getErrorMessage(field).should("be.visible").should("contain.text", text);

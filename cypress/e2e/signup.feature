@@ -8,3 +8,13 @@ Feature: Verify signup form
 		Then I am on the page with URL '/sign-up'
 		* I see the 'error' message text 'This field is required.' below 'signup' field
 		* I see highlighted required 'signup' fields
+
+	Scenario: Cannot sign up with not business email
+		When I fill the 'Signup' form with 'valid' data
+		Then I am on the page with URL '/sign-up'
+		* I see the 'error' message text 'email' below 'signup' field
+		
+	Scenario: Cannot sign up with already registered email
+		When I fill the 'Signup' form with 'existing' data
+		Then I am on the page with URL '/sign-up'
+		* I see the 'error' message text 'email' below 'signup' field

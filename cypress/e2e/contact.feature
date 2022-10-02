@@ -9,9 +9,7 @@ Feature: Verify contact methods
     * The 'phone link' element has 'href' attribute value 'tel:+'
 
   Scenario Outline: Verify social links
-
     Then The '<link>' element has 'href' attribute value '<url>'
-
     Examples:
       | link     | url                                      |
       | LinkedIn | https://www.linkedin.com/company/telnyx/ |
@@ -31,7 +29,7 @@ Feature: Verify contact methods
     Then I am on the page with URL '/thank-you'
     * I see the header text 'Thanks for Reaching Out!'
 
-  Scenario: Cannot send 'Talk to an expert' form with empty fields
+  Scenario: Cannot send 'Talk to an expert' form with empty required fields
     When I click the 'Talk to an expert' link
     Then I see the header text 'Talk to an expert'
     When I submit the 'Talk to an expert' form with empty fields
