@@ -1,8 +1,9 @@
 const { Given, When, Then } = require("@badeball/cypress-cucumber-preprocessor");
+const user = require("../../fixtures/user");
 const basePage = require("../pages/base.page");
 const contactPage = require("../pages/contact.page");
-const user = require("../../fixtures/user");
 const loginPage = require("../pages/login.page");
+const storagePage = require("../pages/storage.page");
 
 Given(/^I am on Telnyx (.*) page$/, (page) => {
     switch (page) {
@@ -11,6 +12,9 @@ Given(/^I am on Telnyx (.*) page$/, (page) => {
             break;
         case "login":
             cy.visit("https://portal.telnyx.com");
+            break;
+        case "storage":
+            cy.visit("/products/storage");
             break;
     }
     basePage.closeCookies();
@@ -35,6 +39,9 @@ When(/^I click the '(.*)' link$/, (link) => {
             break;
         case "Forgot your password?": 
             loginPage.clickLink('password-reset');
+            break;
+        case "Join the waitlist": 
+            storagePage.clickJoinTheWaitListLink();
             break;
         default:
             cy.wrap(0).should("eq", 1, "Click failed");
@@ -67,6 +74,13 @@ When(/^I fill the '(.*)' form with '(.*)' data$/, (form, data) => {
         case "Password Reset":
             loginPage.fillEmailInput('passwordReset', user.email);
             loginPage.submitForm('passwordReset');
+            break;
+        case "Join the waitlist":
+            storagePage.checkFormIsLoad();
+            basePage.fillFirstNameInput(user.firstName);
+            basePage.fillLastNameInput(user.lastName);
+            basePage.fillEmailInput(user.email);
+            basePage.submitForm();
             break;
         default:
             cy.wrap(0).should("eq", 1, "Form not found");
@@ -120,7 +134,13 @@ Then(/^I see the header text '(.*)'$/, (header) => {
         case "Thanks for Reaching Out!":
             contactPage.getMainHeader().should("contain.text", header);
             break;
-    }
+        case "Join the waitlist to try Telnyx Storage":
+            storagePage.getJoinTheWaitListHeader().should("contain.text", header);
+            break;    
+        case "You're on the waitlist!":
+            storagePage.getWaitlistHeader().should("contain.text", header);
+            break;
+        }
 });
 
 Then(/^I see the '(.*)' message text '(.*)' below '(.*)' field$/, (type, text, field) => {
