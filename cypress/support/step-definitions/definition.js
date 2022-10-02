@@ -32,15 +32,15 @@ When(/^I click the '(.*)' link$/, (link) => {
             basePage.clickTalkToExpertLink();
             break;
         case "Single Sign-On":
-            loginPage.clickLink('sso');
+            loginPage.clickLink("sso");
             break;
         case "Resend":
-            loginPage.clickLink('resend-email');
+            loginPage.clickLink("resend-email");
             break;
-        case "Forgot your password?": 
-            loginPage.clickLink('password-reset');
+        case "Forgot your password?":
+            loginPage.clickLink("password-reset");
             break;
-        case "Join the waitlist": 
+        case "Join the waitlist":
             storagePage.clickJoinTheWaitListLink();
             break;
         default:
@@ -59,21 +59,21 @@ When(/^I fill the '(.*)' form with '(.*)' data$/, (form, data) => {
             basePage.submitForm();
             break;
         case "Login":
-            loginPage.fillEmailInput('login', user.email);
-            loginPage.fillPasswordInput('login', user.password);
-            loginPage.submitForm('login');
+            loginPage.fillEmailInput("login", user.email);
+            loginPage.fillPasswordInput("login", user.password);
+            loginPage.submitForm("login");
             break;
         case "Single Sign-On":
-            loginPage.fillEmailInput('sso', user.email);
-            loginPage.submitForm('sso');
+            loginPage.fillEmailInput("sso", user.email);
+            loginPage.submitForm("sso");
             break;
         case "Resend Verification Email":
-            loginPage.fillEmailInput('resendEmail', user.email);
-            loginPage.submitForm('resendEmail');
+            loginPage.fillEmailInput("resendEmail", user.email);
+            loginPage.submitForm("resendEmail");
             break;
         case "Password Reset":
-            loginPage.fillEmailInput('passwordReset', user.email);
-            loginPage.submitForm('passwordReset');
+            loginPage.fillEmailInput("passwordReset", user.email);
+            loginPage.submitForm("passwordReset");
             break;
         case "Join the waitlist":
             storagePage.checkFormIsLoad();
@@ -90,10 +90,11 @@ When(/^I fill the '(.*)' form with '(.*)' data$/, (form, data) => {
 When(/^I submit the '(.*)' form with empty fields$/, (form) => {
     switch (form) {
         case "Talk to an expert":
+        case "Join the waitlist":
             basePage.submitForm();
             break;
         case "Login":
-            loginPage.submitForm('login');
+            loginPage.submitForm("login");
             break;
         default:
             cy.wrap(0).should("eq", 1, "Form not found");
@@ -136,11 +137,11 @@ Then(/^I see the header text '(.*)'$/, (header) => {
             break;
         case "Join the waitlist to try Telnyx Storage":
             storagePage.getJoinTheWaitListHeader().should("contain.text", header);
-            break;    
+            break;
         case "You're on the waitlist!":
             storagePage.getWaitlistHeader().should("contain.text", header);
             break;
-        }
+    }
 });
 
 Then(/^I see the '(.*)' message text '(.*)' below '(.*)' field$/, (type, text, field) => {
@@ -161,10 +162,10 @@ Then(/^I am on the page with URL '(.*)'$/, (url) => {
 Then(/^I see highlighted required '(.*)' fields$/, (type) => {
     switch (type) {
         case "login":
-            loginPage.getRequiredFields(type).should('have.css', 'border-color', 'rgb(255, 102, 102)');
+            loginPage.getRequiredFields(type).should("have.css", "border-color", "rgb(255, 102, 102)");
             break;
-        case "contact":
-            contactPage.getRequiredFields().should('have.class', 'mktoInvalid');
+        default:
+            contactPage.getRequiredFields().should("have.class", "mktoInvalid");
             break;
     }
 });

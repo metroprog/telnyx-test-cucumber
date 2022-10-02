@@ -9,7 +9,7 @@ class ContactPage {
         return cy.get(callFromOverseasHeader);
     }
 
-	getMainHeader() {
+    getMainHeader() {
         return cy.get(mainHeader);
     }
 
@@ -17,11 +17,11 @@ class ContactPage {
         return cy.get(callFromOverseasItems).children();
     }
 
-	getRequiredFields() {
-		return cy.get(requiredFields);
-	}
+    getRequiredFields() {
+        return cy.get(requiredFields);
+    }
 
-	chooseReasonSelect(option) {
+    chooseReasonSelect(option) {
         cy.get(reasonContactSelect, { timeout: 5000 }).select(option);
     }
 }

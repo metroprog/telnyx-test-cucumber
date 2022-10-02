@@ -37,4 +37,4 @@ Feature: Verify contact methods
     When I submit the 'Talk to an expert' form with empty fields
     Then I am on the page with URL '/contact-us'
     * I see the 'error' message text 'This field is required.' below 'Choose reason for contact' field
-    * I see highlighted required 'contact' fields
+    * I see highlighted required 'input' fields
