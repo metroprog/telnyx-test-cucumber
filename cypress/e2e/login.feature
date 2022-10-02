@@ -23,3 +23,9 @@ Feature: Verify login page
     Given I click the 'Forgot your password?' link
 	When I fill the 'Password Reset' form with 'valid' data
 	Then I see the 'success-reset' message text 'We have accepted your password reset request. If you have a Telnyx account and are unable to reset your password successfully, please contact support for assistance.' below 'all' field
+
+  Scenario: Cannot login with empty fields
+    When I submit the 'Login' form with empty fields
+    Then I am on the page with URL '/login/sign-in'
+    * I see the 'error-required' message text 'Required' below 'all' field
+    * I see highlighted required 'login' fields

@@ -8,6 +8,8 @@ const passwordInput = '[name="password"]';
 const submitButton = '[type="submit"]';
 const formLocator = (type) => `[aria-label="${type}Form"]`;
 const messageLocator = (type) => `[data-testid="login.${type}.message"]`;
+const requiredMessages = '[class*="TextField__ErrorMessage"]';
+const requiredFields = '.ui-reactv2-input';
 
 class LoginPage {
 	getMessage(type) {
@@ -15,8 +17,13 @@ class LoginPage {
 			case "error": type = 'signin'; break;
 			case "success-resend": type = 'resend'; break;
 			case "success-reset": type = 'pwreset'; break;
+			case "error-required": return cy.get(requiredMessages);
 		}
 		return cy.get(messageLocator(type));
+	}
+
+	getRequiredFields(formType) {
+		return cy.get(`${formLocator(formType)} ${requiredFields}`);
 	}
 
 	fillEmailInput(formType, email) {

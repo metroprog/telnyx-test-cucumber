@@ -78,6 +78,9 @@ When(/^I submit the '(.*)' form with empty fields$/, (form) => {
         case "Talk to an expert":
             basePage.submitForm();
             break;
+        case "Login":
+            loginPage.submitForm('login');
+            break;
         default:
             cy.wrap(0).should("eq", 1, "Form not found");
     }
@@ -135,6 +138,13 @@ Then(/^I am on the page with URL '(.*)'$/, (url) => {
     cy.url().should("include", url);
 });
 
-Then(/^I see highlighted required fields$/, () => {
-    contactPage.getRequiredFields().should('have.class', 'mktoInvalid');
+Then(/^I see highlighted required '(.*)' fields$/, (type) => {
+    switch (type) {
+        case "login":
+            loginPage.getRequiredFields(type).should('have.css', 'border-color', 'rgb(255, 102, 102)');
+            break;
+        case "contact":
+            contactPage.getRequiredFields().should('have.class', 'mktoInvalid');
+            break;
+    }
 });
