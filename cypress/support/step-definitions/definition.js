@@ -4,6 +4,7 @@ const basePage = require("../pages/base.page");
 const contactPage = require("../pages/contact.page");
 const loginPage = require("../pages/login.page");
 const storagePage = require("../pages/storage.page");
+const signupPage = require("../pages/signup.page");
 
 Given(/^I am on Telnyx (.*) page$/, (page) => {
     switch (page) {
@@ -16,7 +17,10 @@ Given(/^I am on Telnyx (.*) page$/, (page) => {
         case "storage":
             cy.visit("/products/storage");
             break;
-    }
+        case "signup":
+            cy.visit("/sign-up");
+            break;
+        }
     basePage.closeCookies();
 });
 
@@ -96,6 +100,9 @@ When(/^I submit the '(.*)' form with empty fields$/, (form) => {
         case "Login":
             loginPage.submitForm("login");
             break;
+        case "Signup":
+            signupPage.submitForm();
+            break;
         default:
             cy.wrap(0).should("eq", 1, "Form not found");
     }
@@ -149,8 +156,11 @@ Then(/^I see the '(.*)' message text '(.*)' below '(.*)' field$/, (type, text, f
         case "all":
             loginPage.getMessage(type).should("be.visible").should("contain.text", text);
             break;
+        case "signup":
+            signupPage.getErrorMessages().should("be.visible").should("contain.text", text);
+            break;
         default:
-            basePage.getErrorMessage(field).should("contain.text", text);
+            basePage.getErrorMessage(field).should("be.visible").should("contain.text", text);
             break;
     }
 });
@@ -163,6 +173,9 @@ Then(/^I see highlighted required '(.*)' fields$/, (type) => {
     switch (type) {
         case "login":
             loginPage.getRequiredFields(type).should("have.css", "border-color", "rgb(255, 102, 102)");
+            break;
+        case "signup":
+            signupPage.getRequiredFields().should("have.attr", "aria-invalid", "true");
             break;
         default:
             contactPage.getRequiredFields().should("have.class", "mktoInvalid");

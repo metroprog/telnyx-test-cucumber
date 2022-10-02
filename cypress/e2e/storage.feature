@@ -1,4 +1,4 @@
-Feature: Verify storage page
+Feature: Verify storage page form
 
 	Background:
 		Given I am on Telnyx storage page
